@@ -28,6 +28,10 @@ app.post('/events', (req, res) => {
     axios.post('http://query-srv:4002/events', event);
   }
 
+  if (req.body.type === 'CommentModerated') {
+    axios.post('http://comments-srv:4001/events', event);
+  }
+
   res.send({ status: 'OK' });
 });
 

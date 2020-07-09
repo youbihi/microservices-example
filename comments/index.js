@@ -38,6 +38,7 @@ app.post('/blogposts/:id/comments', async (req, res) => {
   console.log('Comment Service, Event Created', 'CommentCreated');
 });
 
+// receiving the event from the client services
 app.post('/events', async (req, res) => {
   console.log('Comment Service, Event Received:', req.body.type);
 
