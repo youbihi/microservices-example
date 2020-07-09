@@ -10,11 +10,11 @@ app.use(cors());
 
 const commentsByPostId = {};
 
-app.get('/posts/:id/comments', (req, res) => {
+app.get('/blogposts/:id/comments', (req, res) => {
   res.send(commentsByPostId[req.params.id] || []);
 });
 
-app.post('/posts/:id/comments', async (req, res) => {
+app.post('/blogposts/:id/comments', async (req, res) => {
   const commentId = randomBytes(4).toString('hex');
   const { content } = req.body;
 
@@ -30,16 +30,16 @@ app.post('/posts/:id/comments', async (req, res) => {
       id: commentId,
       content,
       postId: req.params.id,
-      status: 'pending'
-    }
+      status: 'pending',
+    },
   });
 
   res.status(201).send(comments);
-  console.log("Comment Service, Event Created", "CommentCreated");
+  console.log('Comment Service, Event Created', 'CommentCreated');
 });
 
 app.post('/events', async (req, res) => {
-  console.log("Comment Service, Event Received:", req.body.type);
+  console.log('Comment Service, Event Received:', req.body.type);
 
   const { type, data } = req.body;
 
@@ -47,7 +47,7 @@ app.post('/events', async (req, res) => {
     const { postId, id, status, content } = data;
     const comments = commentsByPostId[postId];
 
-    const comment = comments.find(comment => {
+    const comment = comments.find((comment) => {
       return comment.id === id;
     });
     comment.status = status;
@@ -58,8 +58,8 @@ app.post('/events', async (req, res) => {
         id,
         status,
         postId,
-        content
-      }
+        content,
+      },
     });
   }
 

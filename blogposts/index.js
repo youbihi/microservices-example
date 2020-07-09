@@ -8,35 +8,36 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const posts = {};
+const blogposts = {};
 
-app.get('/posts', (req, res) => {
-  res.send(posts);
+app.get('/blogposts', (req, res) => {
+  res.send(blogposts);
 });
 
-app.post('/posts/create', async (req, res) => {
+app.post('/blogposts/create', async (req, res) => {
   const id = randomBytes(4).toString('hex');
   const { title } = req.body;
 
-  posts[id] = {
+  blogposts[id] = {
     id,
-    title
+    title,
   };
 
+  console.log('blogposte Service, Event Created:', 'BlogpostCreated');
+
   await axios.post('http://event-bus-srv:4005/events', {
-    type: 'PostCreated',
+    type: 'BlogpostCreated',
     data: {
       id,
-      title
-    }
+      title,
+    },
   });
 
-  res.status(201).send(posts[id]);
-  console.log("Poste Service: Event Created", "PostCreated");
+  res.status(201).send(blogposts[id]);
 });
 
 app.post('/events', (req, res) => {
-  console.log('Poste Service: Received Event', req.body.type);
+  console.log('blogposte Service: Received Event', req.body.type);
 
   res.send({});
 });

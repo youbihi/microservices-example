@@ -7,27 +7,27 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const posts = {};
+const blogposts = {};
 
 const handleEvent = (type, data) => {
-  if (type === 'PostCreated') {
+  if (type === 'BlogpostCreated') {
     const { id, title } = data;
 
-    posts[id] = { id, title, comments: [] };
+    blogposts[id] = { id, title, comments: [] };
   }
 
   if (type === 'CommentCreated') {
-    const { id, content, postId, status } = data;
+    const { id, content, blogpostId, status } = data;
 
-    const post = posts[postId];
-    post.comments.push({ id, content, status });
+    const blogpost = blogposts[blogpostId];
+    blogpost.comments.push({ id, content, status });
   }
 
   if (type === 'CommentUpdated') {
-    const { id, content, postId, status } = data;
+    const { id, content, blogpostId, status } = data;
 
-    const post = posts[postId];
-    const comment = post.comments.find(comment => {
+    const blogpost = blogposts[blogpostId];
+    const comment = blogpost.comments.find((comment) => {
       return comment.id === id;
     });
 
@@ -36,8 +36,8 @@ const handleEvent = (type, data) => {
   }
 };
 
-app.get('/posts', (req, res) => {
-  res.send(posts);
+app.get('/blogposts', (req, res) => {
+  res.send(blogposts);
 });
 
 app.post('/events', (req, res) => {
@@ -46,8 +46,7 @@ app.post('/events', (req, res) => {
   handleEvent(type, data);
 
   res.send({});
-    console.log("Query Service, Event received:", req.body.type);
-
+  console.log('Query Service, Event received:', req.body.type);
 });
 
 app.listen(4002, async () => {

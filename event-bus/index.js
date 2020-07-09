@@ -9,21 +9,30 @@ const events = [];
 
 app.post('/events', (req, res) => {
   const event = req.body;
-  console.log("Event Bus, Event received:", req.body.type);
+  console.log('Event Bus, Event received:', req.body.type);
   events.push(event);
 
-  axios.post('http://posts-clusterip-srv:4000/events', event);
-  axios.post('http://comments-srv:4001/events', event);
-  axios.post('http://query-srv:4002/events', event);
-  axios.post('http://moderation-srv:4003/events', event);
+  // subsciption to the events
+
+  if (req.body.type === 'BlogpostCreated') {
+    axios.post('http://query-srv:4002/events', event);
+  }
+
+  if (req.body.type === 'CommentCreated') {
+    axios.post('http://query-srv:4002/events', event);
+    axios.post('http://moderation-srv:4003/events', event);
+  }
+
+  if (req.body.type === 'CommentUpdated') {
+    axios.post('http://comments-srv:4001/events', event);
+    axios.post('http://query-srv:4002/events', event);
+  }
 
   res.send({ status: 'OK' });
 });
 
 app.get('/events', (req, res) => {
   res.send(events);
-  
-
 });
 
 app.listen(4005, () => {

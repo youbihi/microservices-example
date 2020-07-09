@@ -4,29 +4,29 @@ import CommentCreate from './CommentCreate';
 import CommentList from './CommentList';
 
 export default () => {
-  const [posts, setPosts] = useState({});
+  const [blogposts, setBlogposts] = useState({});
 
   const fetchPosts = async () => {
-    const res = await axios.get('http://posts.com/posts');
+    const res = await axios.get('http://posts.com/blogposts');
 
-    setPosts(res.data);
+    setBlogposts(res.data);
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  const renderedPosts = Object.values(posts).map(post => {
+  const renderedBlogposts = Object.values(blogposts).map((blogposts) => {
     return (
       <div
         className="card"
         style={{ width: '30%', marginBottom: '20px' }}
-        key={post.id}
+        key={blogposts.id}
       >
         <div className="card-body">
-          <h3>{post.title}</h3>
-          <CommentList comments={post.comments} />
-          <CommentCreate postId={post.id} />
+          <h3>{blogposts.title}</h3>
+          <CommentList comments={blogposts.comments} />
+          <CommentCreate postId={blogposts.id} />
         </div>
       </div>
     );
@@ -34,7 +34,7 @@ export default () => {
 
   return (
     <div className="d-flex flex-row flex-wrap justify-content-between">
-      {renderedPosts}
+      {renderedBlogposts}
     </div>
   );
 };
