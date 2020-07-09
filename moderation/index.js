@@ -15,17 +15,15 @@ app.post('/events', async (req, res) => {
       type: 'CommentModerated',
       data: {
         id: data.id,
-        postId: data.postId,
+        blogpostId: data.blogpostId,
         status,
-        content: data.content
-      }
+        content: data.content,
+      },
     });
-    console.log("Modaration Service, Event received:", "CommentModerated");
+    console.log('Modaration Service, Event received:', 'CommentModerated');
   }
 
   res.send({});
-  
-
 });
 
 app.listen(4003, () => {

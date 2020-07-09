@@ -26,7 +26,7 @@ export default () => {
         <div className="card-body">
           <h3>{blogposts.title}</h3>
           <CommentList comments={blogposts.comments} />
-          <CommentCreate postId={blogposts.id} />
+          <CommentCreate blogpostId={blogposts.id} />
         </div>
       </div>
     );

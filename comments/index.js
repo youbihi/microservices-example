@@ -29,7 +29,7 @@ app.post('/blogposts/:id/comments', async (req, res) => {
     data: {
       id: commentId,
       content,
-      postId: req.params.id,
+      blogpostId: req.params.id,
       status: 'pending',
     },
   });
@@ -44,8 +44,8 @@ app.post('/events', async (req, res) => {
   const { type, data } = req.body;
 
   if (type === 'CommentModerated') {
-    const { postId, id, status, content } = data;
-    const comments = commentsByPostId[postId];
+    const { blogpostId, id, status, content } = data;
+    const comments = commentsByPostId[blogpostId];
 
     const comment = comments.find((comment) => {
       return comment.id === id;
@@ -57,7 +57,7 @@ app.post('/events', async (req, res) => {
       data: {
         id,
         status,
-        postId,
+        blogpostId,
         content,
       },
     });
